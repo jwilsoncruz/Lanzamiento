@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Express · Evento de lanzamiento</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#f2f6ff;--sf:#fff;--tx:#12183a;--mu:#5d6690;--a:#0a4fd1;--y:#ffc400;--ln:#d5e0f5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#060d24;--sf:#0e1a40;--tx:#eef3ff;--mu:#a9b8dc;--ln:#1f3170;--a:#5b9bff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#060d24;--sf:#0e1a40;--tx:#eef3ff;--mu:#a9b8dc;--ln:#1f3170;--a:#5b9bff;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Poppins',system-ui,sans-serif;line-height:1.5}
+.hero{padding:44px 20px 30px;text-align:center;color:#fff;background:linear-gradient(160deg,#040a22,#0a2a7a 55%,#1a5cff)}
+.hero h1{margin:0;font-size:clamp(2.6rem,10vw,5rem);font-weight:800;letter-spacing:-1px}
+.hero p{margin:4px 0}
+.flag{height:4px;width:120px;margin:12px auto 0;border-radius:4px;background:linear-gradient(90deg,#d52b1e 33%,#ffc400 33% 66%,#007934 66%)}
+main{max-width:980px;margin:0 auto;padding:18px}
+h2{font-size:1.35rem;margin:26px 0 12px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:18px;padding:18px}
+button,.btn{font:inherit;font-weight:700;border:0;border-radius:999px;padding:11px 20px;cursor:pointer;color:#fff;background:linear-gradient(135deg,#0a4fd1,#1a8cff);text-decoration:none;display:inline-block}
+button.alt{background:var(--sf);color:var(--tx);border:1px solid var(--ln)}
+.sm{padding:7px 13px;font-size:.85rem}
+input,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:9px;max-width:100%}
+textarea{width:100%;min-height:130px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center}
+.cd div{background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:12px 4px}
+.cd b{display:block;font-size:clamp(1.8rem,8vw,3.2rem);font-weight:800;color:var(--a);line-height:1.1}
+.cd span{font-size:.75rem;color:var(--mu);text-transform:uppercase;letter-spacing:1px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.p{background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:14px;text-align:center}
+.av{width:64px;height:64px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;font-weight:800;font-size:1.3rem;color:#fff;background:linear-gradient(135deg,#0a4fd1,#1a8cff);overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
+.p small{display:block;color:var(--mu)}
+.tag{font-size:.72rem;color:var(--a);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.ag{list-style:none;margin:0;padding:0}
+.ag li{display:flex;gap:14px;padding:8px 12px;border-radius:12px;margin-bottom:4px}
+.ag b{min-width:60px;color:var(--a)}
+.ag li.done{opacity:.45}
+.ag li.now{background:var(--y);color:#0a1a4a}.ag li.now b{color:#0a1a4a}
+.ag em{margin-left:auto;font-style:normal;font-weight:800;font-size:.72em;background:#0a1a4a;color:var(--y);border-radius:999px;padding:2px 10px;align-self:center}
+.er{display:grid;grid-template-columns:48px 1fr 1fr 1fr auto auto;gap:8px;align-items:center;margin-bottom:8px}
+.er .av{width:44px;height:44px;margin:0;font-size:.9rem}
+.er input{min-width:0;width:100%}
+@media(max-width:700px){.er{grid-template-columns:48px 1fr 1fr}}
+.mu{color:var(--mu);font-size:.9rem}
+#tv{position:fixed;inset:0;z-index:40;display:none;flex-direction:column;color:#fff;background:linear-gradient(160deg,#040a22,#0a2a7a 55%,#1a5cff)}
+#tv.on{display:flex}
+.tvh{display:flex;align-items:center;gap:16px;padding:calc(14px + env(safe-area-inset-top,0px)) 28px 4px}
+.tvh b{font-size:clamp(1.6rem,4vw,3rem);font-weight:800}
+.tvc{margin-left:auto;display:flex;gap:8px}
+.tvc div{text-align:center;background:rgba(255,255,255,.14);border-radius:14px;padding:6px 12px;min-width:66px}
+.tvc b{font-size:clamp(1.3rem,3.6vw,2.8rem);line-height:1.1;display:block}
+.tvc small{font-size:.62rem;letter-spacing:1px;text-transform:uppercase;opacity:.8}
+.tvs{position:relative;flex:1;margin:10px 28px;border-radius:24px;overflow:hidden;background:rgba(0,0,0,.3);min-height:0}
+.sl{position:absolute;inset:0;opacity:0;transition:opacity .8s;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.sl.on{opacity:1}
+.sl h2{font-size:clamp(1.6rem,4vw,3rem);margin:0 0 12px}
+.sl ol{list-style:none;padding:0;margin:0;columns:2;column-gap:28px;text-align:left;font-size:clamp(.95rem,2.2vw,1.7rem);width:100%}
+.sl ol li{break-inside:avoid}
+.sl .qr{background:#fff;border-radius:20px;padding:12px;width:min(36vh,70vw)}
+.sl .qr svg{width:100%;display:block}
+.mq{background:var(--y);color:#0a1a4a;overflow:hidden;white-space:nowrap;padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));font-weight:800;font-size:clamp(1.1rem,2.6vw,2rem)}
+.mq div{display:inline-block;padding-left:100%;animation:mq 40s linear infinite}
+@keyframes mq{to{transform:translateX(-100%)}}
+#stage,#draw{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;color:#fff;background:linear-gradient(160deg,#040a22,#0a2a7a 55%,#1a5cff)}
+#stage.on,#draw.on{display:flex}
+#stage .av{width:clamp(120px,26vw,210px);height:clamp(120px,26vw,210px);font-size:clamp(2.4rem,9vw,4.4rem);border:5px solid #fff}
+#stage h3{font-size:clamp(2rem,8vw,4.6rem);margin:14px 0 0;font-weight:800;animation:pop .5s}
+#stage .r{font-size:clamp(1.1rem,4vw,2rem)}
+#stage .d{letter-spacing:3px;text-transform:uppercase;opacity:.85}
+.dz{font-size:clamp(1.4rem,5vw,3.4rem);font-weight:800;color:var(--y);margin-bottom:16px}
+.dw{font-size:clamp(3rem,13vw,10rem);font-weight:800;line-height:1.1;word-break:break-word}
+.dw.win{color:var(--y);animation:pop .6s}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
+footer{text-align:center;color:var(--mu);padding:20px 20px 40px;font-size:.85rem}
+#qrf{position:fixed;z-index:45;left:16px;top:16px;width:170px;background:#fff;color:#061440;border-radius:18px;padding:10px 10px 14px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.4);cursor:grab;touch-action:none;user-select:none;font-weight:700}
+#qrf svg{width:100%;height:auto;display:block;pointer-events:none}
+#qrf b{display:block;margin-top:4px;line-height:1.2;pointer-events:none}
+#qrx{position:absolute;top:-10px;right:-10px;width:30px;height:30px;padding:0;border-radius:50%;background:#d52b1e}
+#qrr{position:absolute;right:0;bottom:0;width:26px;height:26px;cursor:nwse-resize;background:linear-gradient(135deg,transparent 50%,#0a4fd1 50%);border-bottom-right-radius:18px}
+#qrshow{display:none;position:fixed;z-index:45;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:9px 14px}
+#abar{position:sticky;top:0;z-index:30;display:none;gap:10px;align-items:center;flex-wrap:wrap;background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:8px 12px;margin-bottom:8px}
+.th{position:relative;width:72px;height:72px;border-radius:12px;overflow:hidden;border:1px solid var(--ln)}
+.th img{width:100%;height:100%;object-fit:cover}
+.th button{position:absolute;top:2px;right:2px;padding:0 7px;font-size:.8rem;background:#d52b1e}
+.sl.ph{padding:0}
+.sl .bg{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(24px) brightness(.6)}
+.sl.ph img{position:relative;width:100%;height:100%;object-fit:contain}
+#tv,#stage,#draw{background-size:cover;background-position:center}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(clamp(120px,18vw,260px),1fr));gap:18px;align-items:center;width:100%}
+.sg div{background:#fff;border-radius:18px;padding:14px;height:clamp(90px,18vh,200px)}
+.sg img{width:100%;height:100%;object-fit:contain}
+.er2{display:grid;grid-template-columns:48px 1fr auto auto;gap:8px;align-items:center;margin-bottom:8px}
+.er2 .av{width:44px;height:44px;margin:0;font-size:.9rem}
+.er2 input{min-width:0;width:100%}
+#tvtools{position:absolute;left:14px;bottom:calc(62px + env(safe-area-inset-bottom,0px));z-index:3;display:flex;gap:8px;opacity:.6}
+</style></head>
+<body>
+<canvas id="fx"></canvas>
+<header class="hero">
+  <h1>EXPRESS</h1>
+  <p>Conectamos personas, movemos tu ciudad</p>
+  <p style="font-size:.9rem;opacity:.85">Trinidad · Beni · Bolivia</p><div class="flag"></div>
+  <div class="row" style="justify-content:center"><a class="btn" style="background:#fff;color:#0a4fd1" href="https://play.google.com/store/apps/details?id=com.express.usuario1" target="_blank" rel="noopener">📲 Descargar la app</a><a class="btn" style="background:transparent;border:2px solid #fff" href="https://trinidad.expressdelivery.pro/" target="_blank" rel="noopener">🌐 Sitio web</a></div>
+</header>
+<main>
+  <div id="abar"><b>🔐 Modo admin</b><button class="sm" id="prevtv">👁 Vista TV</button><button class="alt sm" id="copytv">📋 Copiar link de la TV</button><button class="alt sm" id="logout">Cerrar sesión</button><span id="abmsg" class="mu"></span></div>
+  <h2>⏳ Cuenta regresiva</h2>
+  <div class="cd"><div><b id="d">0</b><span>Días</span></div><div><b id="h">0</b><span>Horas</span></div><div><b id="m">0</b><span>Min</span></div><div><b id="s">0</b><span>Seg</span></div></div>
+  <div class="row"><button class="alt" id="boom">🎉 Confeti</button><button class="alt" id="money">💸 Lluvia de dinero</button></div>
+
+  <div id="ctl" style="display:none">
+    <h2>📡 Control de la TV</h2>
+    <div class="card">
+      <p class="mu" style="margin-top:0">Abre este mismo link en otra ventana con <b>#tv</b> al final, llévala al proyector y pulsa <b>F</b> para pantalla completa. Esta ventana queda como control.</p>
+      <div class="row" style="margin-top:0"><button id="start">▶ Presentar equipo</button><button class="alt" id="startd">🏍️ Primeros conductores</button><button class="alt" id="startp">🙋 Primeros pasajeros</button><button class="alt" id="prev">◀</button><button class="alt" id="next">Siguiente ▶</button><button class="alt" id="stop">✕ Cerrar</button><span id="onair" class="mu"></span></div>
+    </div>
+  </div>
+
+  <h2>👥 Nuestro equipo</h2>
+  <div class="grid" id="grid"></div>
+  <div id="dsec" style="display:none"><h2>🏍️ Primeros conductores afiliados</h2><div class="grid" id="gridd"></div></div>
+  <div id="psec" style="display:none"><h2>🙋 Primeros pasajeros registrados</h2><div class="grid" id="gridp"></div></div>
+  <div id="ssec" style="display:none"><h2>🤝 Auspiciantes</h2><div class="sg" id="grids"></div></div>
+
+  <div id="progsec" style="display:none"><h2>📋 Programa <span class="mu">(interno, solo admin)</span></h2>
+  <div class="card"><ol class="ag" id="plist"></ol>
+    <div class="row" id="pctl" style="display:none"><button class="alt sm" id="pprev">◀ Anterior</button><button class="sm" id="pnext">Actividad siguiente ▶</button><button class="alt sm" id="preset">Reiniciar</button><label class="mu"><input type="checkbox" id="showprog"> Mostrar el programa en la TV</label></div></div></div>
+
+  <div id="drawsec" style="display:none">
+    <h2>🎁 Sorteo</h2>
+    <div class="card">
+      <input id="prz" placeholder="Premio (ej. 1 mes de viajes gratis)" style="width:100%">
+      <p class="mu">Participantes: un nombre o número por línea</p>
+      <textarea id="pool"></textarea>
+      <div class="row"><input id="pf" placeholder="Serie ej. A-" style="width:110px"><input id="pfrom" type="number" placeholder="Desde" style="width:90px"><input id="pto" type="number" placeholder="Hasta" style="width:90px"><button class="alt sm" id="gen">+ Talonario</button><button class="alt sm" id="savepool">Guardar lista</button></div>
+      <div class="row"><button id="spin" style="font-size:1.15rem;padding:14px 28px">🎰 SORTEAR</button><button class="alt sm" id="rewon">Reiniciar ganadores</button></div>
+      <p id="dmsg" class="mu"></p>
+    </div>
+  </div>
+
+  <div id="regadm" style="display:none"><h2>🏍️ Registrados, fondos y auspiciantes</h2><div class="card">
+      <p class="mu" style="margin-top:0">Primeros conductores afiliados</p><div id="drows"></div><div class="row" style="margin-top:0"><button class="alt sm" id="addd">+ Conductor</button></div>
+      <p class="mu">Primeros pasajeros registrados</p><div id="prows"></div><div class="row" style="margin-top:0"><button class="alt sm" id="addp">+ Pasajero</button></div>
+      <p class="mu">Imágenes de fondo (TV y presentaciones; cambian cada 20 s)</p><div class="row" id="bgth" style="margin-top:0"></div><div class="row"><button class="alt sm" id="addbg">🖼️ Agregar fondos</button></div>
+      <p class="mu">Logos de auspiciantes</p><div class="row" id="spth" style="margin-top:0"></div><div class="row"><button class="alt sm" id="addsp">🤝 Agregar logos</button></div>
+      <div class="row"><button id="savereg">Guardar todo</button><span id="msg3" class="mu"></span></div></div></div>
+  <div id="tvadm" style="display:none"><h2>📺 Pantalla TV</h2><div class="card">
+      <p class="mu" style="margin-top:0">Fotos del carrusel</p><div class="row" id="ph" style="margin-top:0"></div>
+      <div class="row"><button class="alt sm" id="addph">📷 Agregar fotos</button><label class="mu">Segundos por foto <input id="secs" type="number" min="3" max="60" style="width:70px"></label></div>
+      <p class="mu">Audio: pega un link de YouTube (video o lista).</p><input id="yt" placeholder="https://www.youtube.com/watch?v=..." style="width:100%">
+      <div class="row"><button class="alt sm" id="addau">🎵 Subir archivo de audio (mp3/mp4)</button><button class="alt sm" id="rmau">Quitar</button><span id="auname" class="mu"></span></div>
+      <p class="mu">Mensajes de la marquesina (uno por línea)</p><textarea id="mtx" style="min-height:90px"></textarea>
+      <div class="row"><button id="savetv">Guardar TV</button><span id="msg2" class="mu"></span></div></div></div>
+  <div id="admin" style="display:none">
+    <h2>🔐 Editar evento</h2>
+    <div class="card">
+      <label class="mu">Fecha y hora del evento: <input type="datetime-local" id="when"></label>
+      <p class="mu">Equipo (📷 sube la foto)</p><div id="rows"></div>
+      <div class="row" style="margin-top:0"><button class="alt sm" id="add">+ Persona</button></div>
+      <p class="mu">Programa: una actividad por línea, formato <b>Hora | Actividad</b></p><textarea id="ptx"></textarea>
+      
+      <div class="row"><button id="save">Guardar para todos</button><span id="msg" class="mu"></span></div>
+    </div>
+  </div>
+</main>
+<footer>Express · Evento de lanzamiento · <a href="#" id="login" style="color:inherit">🔐 Admin</a></footer>
+
+<div id="qrf" title="Arrastra para mover · esquina o rueda para cambiar el tamaño"><button id="qrx" title="Ocultar (Q)">✕</button><div id="qrb"></div><b>📲 Escanea y descarga la app</b><i id="qrr"></i></div>
+<button id="qrshow">📲 QR</button>
+<div id="tv">
+  <div class="tvh"><b>EXPRESS</b><span style="opacity:.85">Conectamos personas, movemos tu ciudad</span>
+    <div class="tvc"><div><b id="td">0</b><small>Días</small></div><div><b id="th">0</b><small>Horas</small></div><div><b id="tm">0</b><small>Min</small></div><div><b id="ts">0</b><small>Seg</small></div></div></div>
+  <div class="tvs" id="slides"></div>
+  <div class="mq"><div id="mqt"></div></div>
+  <div id="tvtools"><button class="sm" id="aud" style="display:none">🔊 Reproducir audio</button><span id="audmsg" class="mu" style="display:none;background:rgba(0,0,0,.6);padding:4px 10px;border-radius:10px;color:#fff;max-width:420px"></span><audio id="aplay" loop></audio><button class="alt sm" id="tvx" style="display:none">✕ Salir de TV</button></div>
+  <div id="ytbox" style="position:fixed;left:-400px;top:0;width:220px;height:220px;overflow:hidden"></div>
+</div>
+<div id="stage"><div class="d" id="sd"></div><div class="av" id="sa"></div><h3 id="sn"></h3><div class="r" id="sr"></div></div>
+<div id="draw"><div class="dz" id="dpz"></div><div class="dw" id="dw"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const $=i=>document.getElementById(i);
+const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const APP='https://play.google.com/store/apps/details?id=com.express.usuario1';
+const DEF_STAFF=[['Gerente General','Dirección'],['Gerente de Operaciones','Operaciones'],['Coordinador de Despacho','Operaciones'],['Gerente de Tecnología (CTO)','Tecnología'],['Gerente de Marketing','Marketing y Ventas'],['Community Manager','Marketing y Ventas'],['Gerente Administrativo-Financiero','Administración y Finanzas'],['Asesor Legal','Legal y Seguridad'],['Responsable de Seguridad','Legal y Seguridad'],['Jefe de Atención al Cliente','Atención al Cliente']].map(a=>({n:'Nombre Apellido',r:a[0],d:a[1],p:''}));
+const DEF_PROG=['19:00|Recepción y registro','19:30|Música ambiental y photo-booth','20:00|Apertura oficial y video institucional','20:15|Palabras del Gerente General','20:30|Presentación del equipo','20:50|Demostración en vivo de la app','21:10|Beneficios para conductores','21:30|Show musical','21:50|Sorteos y dinámicas','22:20|Brindis y cierre'].map(l=>{const a=l.split('|');return{t:a[0],a:a[1]}});
+const DEF_MSG=['¡Bienvenidos al lanzamiento de Express!','Descarga la app en Google Play','0 comisión en tus primeras 40 carreras','Bonos semanales para conductores','Trinidad avanza contigo'];
+let defWhen=new Date(Date.now()+7*864e5);defWhen.setHours(20,0,0,0);
+let E={when:defWhen.toISOString(),staff:DEF_STAFF,prog:DEF_PROG,cur:-1,msgs:DEF_MSG,photos:[],yt:'',showProg:false,secs:7};
+let L={on:false,idx:0},D={pool:[],won:[],prize:'',winner:'',t:0},db=null,assets=null,admin=false,draft=[],si=0,lastT=0,dtok=0;
+const isTV=()=>location.hash==='#tv';
+const ini=n=>String(n||'').split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+const av=p=>/^[0-9a-f]{32}$/.test(p.p||'')?`<img src="${bu(p.p)}" alt="">`:esc(ini(p.n));
+function icon(p){const t=((p.r||'')+' '+(p.d||'')).toLowerCase();for(const [r,i] of [[/seguridad/,'🛡️'],[/legal|asesor/,'⚖️'],[/tecnolog|cto/,'💻'],[/marketing|community|ventas/,'📣'],[/operaci|despacho/,'🚖'],[/finanz|administr/,'💼'],[/atenci|cliente/,'🎧'],[/general|direcci/,'👔']])if(r.test(t))return i;return '🚀'}
+
+/* Render */
+function renderTeam(){$('grid').innerHTML=E.staff.map(p=>`<div class="p"><div class="av">${av(p)}</div><b>${esc(p.n)}</b><small>${esc(p.r)}</small><span class="tag">${icon(p)} ${esc(p.d)}</span></div>`).join('')}
+function agItems(){return E.prog.map((x,i)=>{const n=i===E.cur;return `<li class="${i<E.cur?'done':n?'now':''}"><b>${esc(x.t)}</b><span>${esc(x.a)}</span>${n?'<em>AHORA</em>':''}</li>`}).join('')}
+function renderProg(){$('plist').innerHTML=agItems();if(isTV())tvRender()}
+function qrSvg(){try{const q=qrcode(0,'M');q.addData(APP);q.make();const n=q.getModuleCount(),m=2;let d='';for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))d+=`M${c+m} ${r+m}h1v1h-1z`;return `<svg viewBox="0 0 ${n+2*m} ${n+2*m}" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#061440"/></svg>`}catch(e){return ''}}
+function tvRender(){
+  const sl=[`<div class="sl"><h2 style="font-size:clamp(2.4rem,8vw,6rem)">🚀 ¡Bienvenidos!</h2><p style="font-size:clamp(1.2rem,3vw,2.2rem)">Conectamos personas, movemos tu ciudad</p></div>`];
+  (E.photos||[]).forEach(id=>{const u=bu(id);sl.push(`<div class="sl ph"><div class="bg" style="background-image:url('${u}')"></div><img src="${u}" alt=""></div>`)});
+  if((E.sponsors||[]).length)sl.push(sponsorHtml());progIdx=-1;if(E.showProg){progIdx=sl.length;sl.push(`<div class="sl"><h2>📋 Programa de hoy</h2><ol>${agItems()}</ol></div>`)}
+  $('slides').innerHTML=sl.join('');si=0;
+  if(wantProg&&progIdx>=0){si=progIdx;wantProg=false}
+  $('slides').children[si].classList.add('on');
+  const m=(E.msgs.length?E.msgs:DEF_MSG).join('   ✦   ');$('mqt').textContent=m+'   ✦   ';$('mqt').style.animationDuration=Math.max(25,m.length*.22)+'s';
+}
+let hold=0;function tvTick(){if(Date.now()<hold)return;const a=$('slides').children;if(a.length<2)return;a[si].classList.remove('on');si=(si+1)%a.length;a[si].classList.add('on')}
+function showStage(){
+  const p=E.staff[L.idx];if(!isTV()||!L.on||!p){$('stage').classList.remove('on');return}
+  $('sd').textContent=icon(p)+' '+p.d;$('sa').innerHTML=av(p);$('sn').textContent=p.n;$('sr').textContent=p.r;
+  const h=$('sn');h.style.animation='none';void h.offsetWidth;h.style.animation='';
+  $('stage').classList.add('on');burst(innerWidth/2,innerHeight/3,90);
+}
+function onair(){const p=E.staff[L.idx];$('onair').textContent=L.on&&p?'En TV: '+p.n+' ('+(L.idx+1)+'/'+E.staff.length+')':''}
+
+/* Cuenta regresiva */
+const pad=n=>String(n).padStart(2,'0');let fired=false;
+function upd(){
+  let ms=new Date(E.when)-Date.now();if(isNaN(ms))ms=0;
+  if(ms<=0){ms=0;if(!fired){fired=true;boom()}}else fired=false;
+  const s=Math.floor(ms/1000),v=[Math.floor(s/86400),pad(Math.floor(s%86400/3600)),pad(Math.floor(s%3600/60)),pad(s%60)];
+  ['d','h','m','s'].forEach((k,i)=>{$(k).textContent=v[i];$('t'+k).textContent=v[i]});
+}
+
+/* Efectos */
+const cv=$('fx'),cx=cv.getContext('2d');let parts=[],run=false;
+function fit(){cv.width=innerWidth;cv.height=innerHeight}fit();addEventListener('resize',fit);
+const COL=['#1a5cff','#ffc400','#ffffff','#d52b1e','#007934','#5bc0ff'];
+function burst(x,y,n){for(let i=0;i<n;i++){const a=Math.random()*6.28,v=4+Math.random()*9;parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-5,w:6+Math.random()*7,h:4+Math.random()*5,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:COL[i%6],g:.22,life:140+Math.random()*60})}go()}
+function go(){if(!run){run=true;requestAnimationFrame(tick)}}
+function tick(){cx.clearRect(0,0,cv.width,cv.height);parts=parts.filter(p=>p.life>0&&p.y<cv.height+30);
+  for(const p of parts){p.vy+=p.g;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);
+    if(p.e){cx.font=p.w+'px serif';cx.textAlign='center';cx.fillText(p.e,0,0)}else{cx.fillStyle=p.c;cx.fillRect(-p.w/2,-p.h/2,p.w,p.h)}cx.restore()}
+  if(parts.length)requestAnimationFrame(tick);else run=false}
+function boom(){burst(innerWidth*.25,innerHeight*.6,120);burst(innerWidth*.75,innerHeight*.6,120)}
+let ac=null;
+function tone(f,t0,d,v,type){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const t=ac.currentTime+t0,o=ac.createOscillator(),g=ac.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d+.05)}catch(e){}}
+function money(){tone(1318,0,.8,.2,'triangle');tone(1975,.09,.8,.2,'triangle');
+  const E2=['💵','💸','🪙','💰'];for(let i=0;i<80;i++)parts.push({x:Math.random()*cv.width,y:-30-Math.random()*cv.height*.6,vx:(Math.random()-.5)*1.5,vy:1.5+Math.random()*2.5,g:.025,w:28+Math.random()*22,r:Math.random()*6,vr:(Math.random()-.5)*.08,e:E2[i%4],life:420});go()}
+function fx(k){if(admin&&db)db.doc('config/fx').set({k,t:Date.now()}).catch(()=>{})}
+$('boom').onclick=e=>{boom();if(e.isTrusted)fx('c')};
+$('money').onclick=e=>{money();if(e.isTrusted)fx('m')};
+
+/* Sorteo */
+const parsePool=()=>[...new Set($('pool').value.split('\n').map(x=>x.trim()).filter(Boolean))];
+function runDraw(d){
+  if(!d.winner||lastT===d.t)return;lastT=d.t;
+  if(!isTV()){$('dmsg').textContent='🎰 Ganador: '+d.winner;return}
+  const tok=++dtok,w=$('dw'),pool=d.pool.length?d.pool:[d.winner];let n=0;
+  $('draw').classList.add('on');$('dpz').textContent=d.prize?'🎁 '+d.prize:'🎁 Sorteo';w.classList.remove('win');
+  (function step(){if(tok!==dtok)return;
+    if(n++>=38){w.textContent=d.winner;w.classList.add('win');burst(innerWidth/2,innerHeight/2,260);money();setTimeout(()=>{if(tok===dtok)$('draw').classList.remove('on')},15000);return}
+    w.textContent=pool[Math.floor(Math.random()*pool.length)];tone(500+n*12,0,.07,.05);setTimeout(step,60+n*n*.18)})();
+}
+$('draw').onclick=()=>{dtok++;$('draw').classList.remove('on')};
+$('gen').onclick=()=>{const a=parseInt($('pfrom').value),b=parseInt($('pto').value),pf=$('pf').value.trim();
+  if(isNaN(a)||isNaN(b)||b<a||b-a>=5000){$('dmsg').textContent='Revisa Desde y Hasta (máx. 5000)';return}
+  const out=[];for(let i=a;i<=b;i++)out.push(pf+i);$('pool').value=[...parsePool(),...out].join('\n');$('dmsg').textContent='Talonario agregado, guarda la lista'};
+$('savepool').onclick=async()=>{D={...D,pool:parsePool(),prize:$('prz').value.trim()};if(db)try{await db.doc('config/draw').set(D);$('dmsg').textContent='✅ Lista guardada: '+D.pool.length+' participantes'}catch(e){$('dmsg').textContent='No se pudo guardar'}};
+$('spin').onclick=async()=>{const pool=parsePool(),left=pool.filter(x=>!D.won.includes(x));if(!left.length){$('dmsg').textContent='No quedan participantes';return}
+  const r=new Uint32Array(1);crypto.getRandomValues(r);const w=left[r[0]%left.length];
+  D={pool,won:[...D.won,w],prize:$('prz').value.trim(),winner:w,t:Date.now()};runDraw(D);
+  if(db)try{await db.doc('config/draw').set(D)}catch(e){$('dmsg').textContent='No se pudo enviar a la TV'}};
+$('rewon').onclick=async()=>{D={...D,won:[],winner:''};$('dmsg').textContent='Ganadores reiniciados';if(db)try{await db.doc('config/draw').set(D)}catch(e){}};
+
+/* Control en vivo */
+function live(on,idx){L={on,idx,t:Date.now()};onair();if(db)db.doc('config/live').set(L).catch(()=>{})}
+$('start').onclick=()=>live(true,0);
+$('next').onclick=()=>{if(!L.on)return live(true,0);if(L.idx<E.staff.length-1)live(true,L.idx+1);else burst(innerWidth/2,innerHeight/2,200)};
+$('prev').onclick=()=>{if(L.on&&L.idx>0)live(true,L.idx-1)};
+$('stop').onclick=()=>live(false,L.idx);
+async function pSave(){if(db)try{await db.doc('config/event').set(E)}catch(e){$('msg').textContent='No se pudo guardar'}}
+$('pnext').onclick=()=>{if(E.cur<E.prog.length-1){E.cur++;renderProg();pSave()}};
+$('pprev').onclick=()=>{if(E.cur>-1){E.cur--;renderProg();pSave()}};
+$('preset').onclick=()=>{E.cur=-1;renderProg();pSave()};
+
+/* Editor */
+async function shrink(f,mx){const b=await createImageBitmap(f),k=Math.min(1,mx/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);c.getContext('2d').drawImage(b,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,'image/jpeg',.85))}
+function rows(){const box=$('rows');box.innerHTML='';
+  draft.forEach((p,i)=>{const r=document.createElement('div');r.className='er';
+    r.innerHTML=`<div class="av">${av(p)}</div><input data-k="n" placeholder="Nombre"><input data-k="r" placeholder="Cargo"><input data-k="d" placeholder="Departamento"><button class="alt sm" data-a="ph">📷</button><button class="alt sm" data-a="del">🗑</button>`;
+    r.querySelectorAll('input').forEach(x=>{x.value=p[x.dataset.k]||'';x.oninput=()=>{p[x.dataset.k]=x.value}});
+    r.querySelector('[data-a=del]').onclick=()=>{draft.splice(i,1);rows()};
+    r.querySelector('[data-a=ph]').onclick=()=>{if(!assets){$('msg').textContent='Subida de fotos no disponible';return}
+      const f=document.createElement('input');f.type='file';f.accept='image/*';
+      f.onchange=async()=>{if(!f.files[0])return;$('msg').textContent='Subiendo foto…';try{const u=await assets.upload(await shrink(f.files[0],400));p.p=u.id;$('msg').textContent='Foto lista, falta guardar';rows()}catch(e){$('msg').textContent='No se pudo subir la foto'}};f.click()};
+    box.appendChild(r)})}
+function openEditor(){draft=E.staff.map(x=>({...x}));rows();$('ptx').value=E.prog.map(x=>x.t+' | '+x.a).join('\n');$('mtx').value=E.msgs.join('\n');
+  const t=new Date(new Date(E.when)-new Date().getTimezoneOffset()*6e4);if(!isNaN(t))$('when').value=t.toISOString().slice(0,16)}
+$('add').onclick=()=>{draft.push({n:'',r:'',d:'',p:''});rows()};
+$('save').onclick=async()=>{
+  E.staff=draft.filter(p=>(p.n||'').trim()).map(p=>({n:p.n.trim(),r:(p.r||'').trim(),d:(p.d||'').trim(),p:p.p||''}));
+  E.prog=$('ptx').value.split('\n').map(l=>{const a=l.split('|');return a.length>1?{t:a[0].trim(),a:a.slice(1).join('|').trim()}:{t:'',a:a[0].trim()}}).filter(x=>x.a);
+  E.msgs=$('mtx').value.split('\n').map(x=>x.trim()).filter(Boolean);
+  const w=new Date($('when').value);if(!isNaN(w))E.when=w.toISOString();
+  E.cur=Math.min(E.cur,E.prog.length-1);renderTeam();renderProg();upd();
+  if(!db){$('msg').textContent='Sin conexión a la base de datos';return}
+  try{await db.doc('config/event').set(E);$('msg').textContent='✅ Guardado para todos'}catch(e){$('msg').textContent='No se pudo guardar'}};
+
+/* TV */
+function tvMode(){const on=isTV();$('tv').classList.toggle('on',on);if(on){tvRender();showStage()}else{$('stage').classList.remove('on')}syncUI()}
+addEventListener('hashchange',tvMode);
+addEventListener('keydown',e=>{
+  if(e.key==='f'||e.key==='F'){if(isTV())(document.documentElement.requestFullscreen||(()=>Promise.reject())).call(document.documentElement).catch(()=>{})}
+  if(e.key==='c'||e.key==='C'){if(isTV())boom()}
+  if((e.key==='a'||e.key==='A')&&isTV()&&ytParse(E.yt))$('aud').click();
+  if(e.key==='Escape'&&isTV()&&admin)location.hash='';
+  if(e.key==='m'||e.key==='M'){if(isTV())money()}
+});
+
+/* Carrusel, audio y admin */
+let edInit=false,audioOK=false,progIdx=-1,wantProg=false,tvd=[];
+const IMG={},PEND=new Set();let rt=0;
+function bu(id){if(IMG[id])return IMG[id];
+  if(!PEND.has(id)&&window.fs){PEND.add(id);window.fs.doc('assets/'+id).get().then(x=>{if(x.exists){IMG[id]=x.data().d;clearTimeout(rt);rt=setTimeout(()=>{renderTeam();renderProg();applyBg();if(isTV())tvRender();if(admin){thumbs();regDraw()}},150)}}).catch(()=>{})}
+  return ''}
+function ytParse(u){u=(u||'').trim();const v=u.match(/(?:v=|youtu\.be\/|shorts\/|live\/|embed\/)([\w-]{11})/),l=u.match(/[?&]list=([\w-]+)/);if(v)return{v:v[1],l:l&&l[1]};if(l)return{l:l[1]};return /^[\w-]{11}$/.test(u)?{v:u}:null}
+function syncAudio(){const box=$('ytbox'),p=ytParse(E.yt);
+  if(!isTV()||!audioOK||!p){if(box.innerHTML){box.innerHTML='';box.dataset.src=''}return}
+  const src=p.v?`https://www.youtube-nocookie.com/embed/${p.v}?autoplay=1&loop=1&${p.l?'list='+p.l:'playlist='+p.v}`:`https://www.youtube-nocookie.com/embed/videoseries?list=${p.l}&autoplay=1&loop=1`;
+  if(box.dataset.src!==src){box.dataset.src=src;box.innerHTML=`<iframe src="${src}" allow="autoplay" style="width:220px;height:220px;border:0"></iframe>`}}
+function syncUI(){$('showprog').checked=!!E.showProg;
+  {const p=ytParse(E.yt);$('aud').style.display=isTV()&&p?'inline-block':'none';if(p)$('aud').href=p.v?'https://www.youtube.com/watch?v='+p.v+(p.l?'&list='+p.l:''):'https://www.youtube.com/playlist?list='+p.l}
+  $('tvx').style.display=isTV()&&admin?'inline-block':'none';syncAudio()}
+
+$('tvx').onclick=()=>{location.hash=''};
+$('prevtv').onclick=()=>{location.hash='#tv'};
+$('copytv').onclick=async()=>{const u=(typeof claude==='undefined'?location.href.split('#')[0]:'https://claude.ai/artifact/NxSbDmXoDq5vRixvaKkCcn')+'#tv';try{await navigator.clipboard.writeText(u);$('abmsg').textContent='📋 Link copiado'}catch(e){prompt('Copia este link:',u)}};
+$('showprog').onchange=()=>{E.showProg=$('showprog').checked;wantProg=E.showProg;renderProg();pSave()};
+function thumbs(){const b=$('ph');b.innerHTML='';tvd.forEach((id,i)=>{const d=document.createElement('div');d.className='th';d.innerHTML=`<img src="${bu(id)}" alt=""><button>×</button>`;d.querySelector('button').onclick=()=>{tvd.splice(i,1);thumbs()};b.appendChild(d)})}
+function openTvEditor(){tvd=[...(E.photos||[])];thumbs();$('yt').value=E.yt||'';$('secs').value=E.secs||7;$('mtx').value=E.msgs.join('\n')}
+$('addph').onclick=()=>{if(!assets){$('msg2').textContent='Subida de fotos no disponible';return}
+  const f=document.createElement('input');f.type='file';f.accept='image/*';f.multiple=true;
+  f.onchange=async()=>{$('msg2').textContent='Subiendo fotos…';try{for(const x of f.files){const u=await assets.upload(await shrink(x,1280));tvd.push(u.id)}$('msg2').textContent='Fotos listas, falta guardar TV';thumbs()}catch(e){$('msg2').textContent='No se pudo subir alguna foto'}};f.click()};
+$('savetv').onclick=async()=>{E.photos=[...tvd];E.yt=$('yt').value.trim();E.secs=Math.max(3,Math.min(60,+$('secs').value||7));E.msgs=$('mtx').value.split('\n').map(x=>x.trim()).filter(Boolean);
+  syncUI();if(isTV())tvRender();if(!db){$('msg2').textContent='Sin base de datos';return}
+  try{await db.doc('config/event').set(E);$('msg2').textContent='✅ TV guardada'}catch(e){$('msg2').textContent='No se pudo guardar'}};
+
+/* QR flotante: mover y dimensionar */
+(function(){
+  const q=$('qrf');let S={x:null,y:null,w:170,hide:0},m=null;
+  try{S=Object.assign(S,JSON.parse(localStorage.getItem('qrpos')||'{}'))}catch(e){}
+  $('qrb').innerHTML=qrSvg();
+  function apply(){const w=Math.max(90,Math.min(S.w,innerWidth-8,innerHeight*.85));S.w=w;q.style.width=w+'px';q.style.fontSize=Math.max(9,w/13)+'px';
+    const h=q.offsetHeight;if(S.x==null){S.x=innerWidth-w-16;S.y=innerHeight-h-90}
+    S.x=Math.max(0,Math.min(S.x,innerWidth-w));S.y=Math.max(0,Math.min(S.y,innerHeight-h));q.style.left=S.x+'px';q.style.top=S.y+'px'}
+  const save=()=>{try{localStorage.setItem('qrpos',JSON.stringify(S))}catch(e){}};
+  q.addEventListener('pointerdown',e=>{if(e.target.id==='qrx')return;m={k:e.target.id==='qrr'?'r':'m',px:e.clientX,py:e.clientY,x:S.x,y:S.y,w:S.w};q.setPointerCapture(e.pointerId);e.preventDefault()});
+  q.addEventListener('pointermove',e=>{if(!m)return;const dx=e.clientX-m.px,dy=e.clientY-m.py;if(m.k==='m'){S.x=m.x+dx;S.y=m.y+dy}else S.w=m.w+Math.max(dx,dy);apply()});
+  const up=()=>{if(m){m=null;save()}};q.addEventListener('pointerup',up);q.addEventListener('pointercancel',up);
+  q.addEventListener('wheel',e=>{e.preventDefault();S.w*=e.deltaY<0?1.08:.92;apply();save()},{passive:false});
+  $('qrx').onclick=()=>{q.style.display='none';$('qrshow').style.display='block';S.hide=1;save()};
+  $('qrshow').onclick=()=>{q.style.display='block';$('qrshow').style.display='none';S.hide=0;apply();save()};
+  if(S.hide){q.style.display='none';$('qrshow').style.display='block'}else apply();
+  addEventListener('resize',()=>{if(q.style.display!=='none')apply()});
+  addEventListener('keydown',e=>{if((e.key==='q'||e.key==='Q')&&!/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||''))(q.style.display==='none'?$('qrshow'):$('qrx')).click()});
+})();
+
+/* Audio con reproducir/detener dentro de la página */
+function ytSrc(p){return p.v?`https://www.youtube.com/embed/${p.v}?autoplay=1&loop=1&enablejsapi=1&${p.l?'list='+p.l:'playlist='+p.v}`:`https://www.youtube.com/embed/videoseries?list=${p.l}&autoplay=1&loop=1&enablejsapi=1`}
+function setIdent(){const k=isTV()?['📺','Express · TV']:admin?['🎛️','Express · Control']:['🚖','Express · Evento'];
+  document.title=k[1];let l=document.querySelector('link[rel=icon]');if(!l){l=document.createElement('link');l.rel='icon';document.head.appendChild(l)}
+  l.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">'+k[0]+'</text></svg>')}
+function syncAudio(){}
+function syncUI(){setIdent();$('showprog').checked=!!E.showProg;
+  $('aud').style.display=isTV()&&(E.audio||ytParse(E.yt))?'inline-block':'none';
+  $('aud').textContent=audioOK?'⏹ Detener audio':'🔊 Reproducir audio';
+  $('tvx').style.display=isTV()&&admin?'inline-block':'none';
+  $('auname').textContent=E.audio?'Archivo de audio cargado ✔':'';
+  if(!isTV()&&audioOK)setAud(false)}
+function setAud(on){audioOK=on;const m=$('audmsg'),a=$('aplay'),box=$('ytbox');m.style.display='none';box.innerHTML='';a.pause();a.removeAttribute('src');
+  const msg=t=>{m.textContent=t;m.style.display='inline-block'};
+  if(on){
+    if(E.audio){a.src=bu(E.audio);a.play().catch(()=>{audioOK=false;$('aud').textContent='🔊 Reproducir audio';msg('El navegador bloqueó el audio. Pulsa de nuevo.')})}
+    else{const p=ytParse(E.yt);if(!p){audioOK=false}else{let ok=false;const h=e=>{if(/youtube/.test(e.origin))ok=true};addEventListener('message',h);
+      const fr=document.createElement('iframe');fr.allow='autoplay';fr.style.cssText='width:220px;height:220px;border:0';
+      fr.onload=()=>{try{fr.contentWindow.postMessage(JSON.stringify({event:'listening',id:1,channel:'widget'}),'*')}catch(e){}};
+      fr.src=ytSrc(p);box.appendChild(fr);
+      setTimeout(()=>{removeEventListener('message',h);if(audioOK&&!ok)msg('YouTube no se puede reproducir dentro de esta página. Sube un archivo de audio (mp3/mp4) en el panel admin.')},5000)}}}
+  $('aud').textContent=audioOK?'⏹ Detener audio':'🔊 Reproducir audio'}
+$('aud').onclick=()=>setAud(!audioOK);
+$('addau').onclick=()=>{if(!assets){$('msg2').textContent='Subida no disponible';return}
+  const f=document.createElement('input');f.type='file';f.accept='audio/*,video/*';
+  f.onchange=async()=>{if(!f.files[0])return;$('msg2').textContent='Subiendo audio…';try{const u=await assets.upload(f.files[0]);E.audio=u.id;syncUI();await pSave();$('msg2').textContent='✅ Audio guardado'}catch(e){$('msg2').textContent='No se pudo subir (máx. 20 MB; prueba mp3 o mp4)'}};f.click()};
+$('rmau').onclick=async()=>{E.audio='';syncUI();await pSave();$('msg2').textContent='Audio quitado'};
+
+/* Conductores, pasajeros, fondos y auspiciantes */
+const curList=()=>L.s==='drivers'?(E.drivers||[]):L.s==='pass'?(E.pass||[]):E.staff;
+function renderTeam(){
+  $('grid').innerHTML=E.staff.map(p=>`<div class="p"><div class="av">${av(p)}</div><b>${esc(p.n)}</b><small>${esc(p.r)}</small><span class="tag">${icon(p)} ${esc(p.d)}</span></div>`).join('');
+  const mk=(a,k)=>a.map((p,i)=>`<div class="p"><div class="av">${av(p)}</div><b>${esc(p.n)}</b><small>${k} N° ${i+1}</small></div>`).join('');
+  const D=E.drivers||[],P=E.pass||[],S=E.sponsors||[];
+  $('dsec').style.display=D.length?'block':'none';$('gridd').innerHTML=mk(D,'Conductor');
+  $('psec').style.display=P.length?'block':'none';$('gridp').innerHTML=mk(P,'Pasajero');
+  $('ssec').style.display=S.length?'block':'none';$('grids').innerHTML=S.map(id=>`<div><img src="${bu(id)}" alt=""></div>`).join('')}
+function sponsorHtml(){return `<div class="sl"><h2>🤝 Gracias a nuestros auspiciantes</h2><div class="sg">${(E.sponsors||[]).map(id=>`<div><img src="${bu(id)}" alt=""></div>`).join('')}</div></div>`}
+function showStage(){const p0=curList()[L.idx];if(!isTV()||!L.on||!p0){$('stage').classList.remove('on');return}
+  const k=L.s==='drivers'?['🏍️','Primeros conductores afiliados','Conductor afiliado N° '+(L.idx+1)]:L.s==='pass'?['🙋','Primeros pasajeros registrados','Pasajero N° '+(L.idx+1)]:[icon(p0),p0.d,p0.r];
+  $('sd').textContent=k[0]+' '+k[1];$('sa').innerHTML=av(p0);$('sn').textContent=p0.n;$('sr').textContent=k[2];
+  const h=$('sn');h.style.animation='none';void h.offsetWidth;h.style.animation='';$('stage').classList.add('on');burst(innerWidth/2,innerHeight/3,90)}
+function onair(){const l=curList(),p=l[L.idx];$('onair').textContent=L.on&&p?'En TV: '+p.n+' ('+(L.idx+1)+'/'+l.length+')':''}
+function live(on,idx,s){L={on,idx,s:s||L.s||'staff',t:Date.now()};onair();showStage();if(db)db.doc('config/live').set(L).catch(()=>{})}
+$('start').onclick=()=>live(true,0,'staff');
+$('startd').onclick=()=>{if((E.drivers||[]).length)live(true,0,'drivers');else alert('Primero agrega conductores en el panel admin')};
+$('startp').onclick=()=>{if((E.pass||[]).length)live(true,0,'pass');else alert('Primero agrega pasajeros en el panel admin')};
+$('next').onclick=()=>{if(!L.on)return live(true,0,L.s||'staff');if(L.idx<curList().length-1)live(true,L.idx+1,L.s);else burst(innerWidth/2,innerHeight/2,200)};
+$('prev').onclick=()=>{if(L.on&&L.idx>0)live(true,L.idx-1,L.s)};
+$('stop').onclick=()=>live(false,L.idx,L.s);
+let bi=0;
+function applyBg(){const n=(E.bgs||[]).length,u=n?bu(E.bgs[bi%n]):'';['tv','stage','draw'].forEach(id=>{const e=$(id);e.style.backgroundImage=u?`linear-gradient(rgba(4,10,34,.5),rgba(4,10,34,.75)),url('${u}')`:''})}
+setInterval(()=>{if((E.bgs||[]).length>1){bi++;applyBg()}},20000);
+async function shrinkFlat(f,mx){const b=await createImageBitmap(f),k=Math.min(1,mx/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(b,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,'image/jpeg',.9))}
+let rd={drivers:[],pass:[],bgs:[],sponsors:[]};
+function openReg(){rd={drivers:(E.drivers||[]).map(x=>({...x})),pass:(E.pass||[]).map(x=>({...x})),bgs:[...(E.bgs||[])],sponsors:[...(E.sponsors||[])]};regDraw()}
+function openTvEditor(){tvd=[...(E.photos||[])];thumbs();$('yt').value=E.yt||'';$('secs').value=E.secs||7;$('mtx').value=E.msgs.join('\n');openReg()}
+function regDraw(){peopleRows('drows',rd.drivers);peopleRows('prows',rd.pass);idThumbs('bgth',rd.bgs);idThumbs('spth',rd.sponsors)}
+function peopleRows(box,arr){const b=$(box);b.innerHTML='';arr.forEach((p,i)=>{const r=document.createElement('div');r.className='er2';
+  r.innerHTML=`<div class="av">${av(p)}</div><input placeholder="Nombre"><button class="alt sm">📷</button><button class="alt sm">🗑</button>`;
+  const inp=r.querySelector('input');inp.value=p.n||'';inp.oninput=()=>{p.n=inp.value};
+  const [b1,b2]=r.querySelectorAll('button');b1.onclick=()=>upOne(p);b2.onclick=()=>{arr.splice(i,1);regDraw()};b.appendChild(r)})}
+function upOne(p){if(!assets){$('msg3').textContent='Subida no disponible';return}const f=document.createElement('input');f.type='file';f.accept='image/*';
+  f.onchange=async()=>{if(!f.files[0])return;$('msg3').textContent='Subiendo foto…';try{const u=await assets.upload(await shrink(f.files[0],400));p.p=u.id;$('msg3').textContent='Foto lista, falta guardar';regDraw()}catch(e){$('msg3').textContent='No se pudo subir la foto'}};f.click()}
+function idThumbs(box,arr){const b=$(box);b.innerHTML='';arr.forEach((id,i)=>{const d=document.createElement('div');d.className='th';d.innerHTML=`<img src="${bu(id)}" alt=""><button>×</button>`;d.querySelector('button').onclick=()=>{arr.splice(i,1);regDraw()};b.appendChild(d)})}
+function addMany(arr,mx,flat){if(!assets){$('msg3').textContent='Subida no disponible';return}const f=document.createElement('input');f.type='file';f.accept='image/*';f.multiple=true;
+  f.onchange=async()=>{$('msg3').textContent='Subiendo…';try{for(const x of f.files){const u=await assets.upload(await (flat?shrinkFlat:shrink)(x,mx));arr.push(u.id)}$('msg3').textContent='Listo, falta guardar';regDraw()}catch(e){$('msg3').textContent='No se pudo subir alguna imagen'}};f.click()}
+$('addd').onclick=()=>{rd.drivers.push({n:'',p:''});regDraw()};
+$('addp').onclick=()=>{rd.pass.push({n:'',p:''});regDraw()};
+$('addbg').onclick=()=>addMany(rd.bgs,1600,false);
+$('addsp').onclick=()=>addMany(rd.sponsors,700,true);
+$('savereg').onclick=async()=>{const cl=a=>a.filter(x=>(x.n||'').trim()).map(x=>({n:x.n.trim(),p:x.p||''}));
+  E.drivers=cl(rd.drivers);E.pass=cl(rd.pass);E.bgs=[...rd.bgs];E.sponsors=[...rd.sponsors];
+  renderTeam();applyBg();if(isTV())tvRender();
+  if(!db){$('msg3').textContent='Sin base de datos';return}
+  try{await db.doc('config/event').set(E);$('msg3').textContent='✅ Guardado para todos'}catch(e){$('msg3').textContent='No se pudo guardar'}};
+
+
+/* ===== Firebase (Firestore + Auth) ===== */
+const FB_CONFIG={
+  apiKey:"AIzaSyCcPQA9TRYPdTp0hjyEclWfL15mr1TE1pM",
+  authDomain:"lanzamiento-b9fe8.firebaseapp.com",
+  projectId:"lanzamiento-b9fe8",
+  storageBucket:"lanzamiento-b9fe8.firebasestorage.app",
+  messagingSenderId:"134737092696",
+  appId:"1:134737092696:web:dde40f27151d3bedf06a2d"
+};
+const ADMINS=['jwilsoncruz@gmail.com'];   /* correos con permiso de administrador */
+async function fbInit(){
+  firebase.initializeApp(FB_CONFIG);
+  const fs=firebase.firestore(),auth=firebase.auth();window.fs=fs;
+  db={doc:p=>({set:d=>fs.doc(p).set(d),onSnapshot:(f,er)=>fs.doc(p).onSnapshot(x=>f({exists:x.exists,data:()=>x.data()}),er||(()=>{}))})};
+  assets={upload:blob=>new Promise((ok,no)=>{const fr=new FileReader();fr.onload=async()=>{
+    if(fr.result.length>900000){no(new Error('grande'));return}
+    const id=[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,'0')).join('');
+    try{await fs.doc('assets/'+id).set({d:fr.result});IMG[id]=fr.result;ok({id})}catch(e){no(e)}};fr.onerror=no;fr.readAsDataURL(blob)})};
+  const u=await new Promise(r=>{const off=auth.onAuthStateChanged(x=>{off();r(x)})});
+  admin=!!u&&ADMINS.map(x=>x.toLowerCase()).includes((u.email||'').toLowerCase());
+  const lg=$('login');
+  if(u){lg.textContent=admin?'Cerrar sesión':'Sin permiso ('+u.email+') · salir';lg.onclick=async e=>{e.preventDefault();await auth.signOut();location.reload()}}
+  else lg.onclick=async e=>{e.preventDefault();try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());location.reload()}catch(er){alert('No se pudo iniciar sesión')}};
+  if($('logout'))$('logout').onclick=()=>lg.click();
+  const r=$('addau');if(r)r.parentNode.style.display='none';
+}
+
+/* Init */
+async function init(){
+  renderTeam();renderProg();upd();tvMode();setInterval(upd,1000);let tn=0;setInterval(()=>{if(isTV()&&!L.on&&++tn>=(E.secs||7)){tn=0;tvTick()}},1000);
+  try{await fbInit()}catch(e){console.error(e);alert('No se pudo conectar con Firebase. Revisa FB_CONFIG.')}
+  if(admin&&!isTV()){['ctl','drawsec','admin','tvadm','progsec','regadm'].forEach(i=>$(i).style.display='block');$('pctl').style.display='flex';$('abar').style.display='flex';if(!db){openEditor();openTvEditor()}}
+  syncUI();
+  if(!db)return;
+  try{
+    db.doc('config/event').onSnapshot(s=>{const d=s.exists?s.data():null;if(!d){if(admin&&!edInit){edInit=true;openEditor();openTvEditor()}return}
+      if(Array.isArray(d.staff)&&d.staff.length)E.staff=d.staff;if(Array.isArray(d.prog)&&d.prog.length)E.prog=d.prog;if(Array.isArray(d.msgs))E.msgs=d.msgs;E.photos=Array.isArray(d.photos)?d.photos:[];E.yt=typeof d.yt==='string'?d.yt:'';E.showProg=!!d.showProg;E.secs=d.secs||7;E.audio=typeof d.audio==='string'?d.audio:'';E.drivers=Array.isArray(d.drivers)?d.drivers:[];E.pass=Array.isArray(d.pass)?d.pass:[];E.bgs=Array.isArray(d.bgs)?d.bgs:[];E.sponsors=Array.isArray(d.sponsors)?d.sponsors:[];applyBg();
+      if(typeof d.cur==='number'){if(d.cur!==E.cur){hold=Date.now()+30000;wantProg=true}E.cur=d.cur}if(d.when)E.when=d.when;renderTeam();renderProg();upd();onair();syncUI();if(admin&&!edInit){edInit=true;openEditor();openTvEditor()}},()=>{});
+    db.doc('config/live').onSnapshot(s=>{if(s.exists){L=s.data();onair();showStage()}},()=>{});
+    let f1=true;db.doc('config/fx').onSnapshot(s=>{if(f1){f1=false;return}if(isTV()&&s.exists){s.data().k==='m'?money():boom()}},()=>{});
+    let f2=true;db.doc('config/draw').onSnapshot(s=>{const d=s.exists?s.data():null;if(!d)return;const first=f2;f2=false;
+      D={pool:Array.isArray(d.pool)?d.pool.map(String):[],won:Array.isArray(d.won)?d.won.map(String):[],prize:String(d.prize||''),winner:String(d.winner||''),t:d.t||0};
+      if(first)lastT=D.t;if(admin&&!$('pool').value)$('pool').value=D.pool.join('\n');if(admin&&!$('prz').value)$('prz').value=D.prize;
+      if(!first)runDraw(D)},()=>{});
+  }catch(e){}
+}
+init();
+</script>
+</body></html>
