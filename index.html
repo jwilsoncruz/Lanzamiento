@@ -104,6 +104,27 @@ footer{text-align:center;color:var(--mu);padding:20px 20px 40px;font-size:.85rem
 .er2{display:grid;grid-template-columns:48px 1fr auto auto;gap:8px;align-items:center;margin-bottom:8px}
 .er2 .av{width:44px;height:44px;margin:0;font-size:.9rem}
 .er2 input{min-width:0;width:100%}
+.er4{display:grid;grid-template-columns:48px 1fr 96px auto auto;gap:8px;align-items:center;margin-bottom:8px}
+.er4 .av{width:44px;height:44px;margin:0;font-size:.9rem}
+.er4 input{min-width:0;width:100%}
+@media(max-width:700px){.er4{grid-template-columns:48px 1fr 96px}}
+.rk{list-style:none;margin:0;padding:0;width:min(900px,92%);font-size:clamp(.9rem,2.2vw,1.7rem);text-align:left}
+.rk li{display:flex;gap:16px;align-items:center;padding:8px 16px;border-radius:14px;background:rgba(255,255,255,.08);margin-bottom:8px}
+.rk li b{min-width:64px;text-align:center}
+.rk li span{flex:1;font-weight:700}
+.rk li em{font-style:normal;color:var(--y);font-weight:800}
+.rk li.t1{background:rgba(255,196,0,.22);border:1px solid rgba(255,196,0,.6)}
+.cdbig{display:flex;gap:clamp(10px,2vw,30px)}
+.cdbig div{background:rgba(255,255,255,.12);border-radius:22px;padding:clamp(10px,2vw,26px) clamp(14px,3vw,40px);min-width:clamp(90px,14vw,200px)}
+.cdbig b{display:block;font-size:clamp(3rem,10vw,8rem);line-height:1}
+.cdbig small{letter-spacing:3px;text-transform:uppercase;opacity:.8}
+.cfgr{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.cfgr>label:first-child{min-width:270px}
+.cfgr input[type=number]{width:72px}
+#tvcdn+.tvc{margin-left:0}
+.noqr #qrf,.noqr #qrshow{display:none!important}
+.nomq .mq{display:none}
+.nocd .tvh .tvc,.nocd #tvcdn{display:none}
 .er3{display:grid;grid-template-columns:72px 1fr 130px auto auto;gap:8px;align-items:center;margin-bottom:8px}
 .er3 input,.er3 select{min-width:0;width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:9px}
 @media(max-width:700px){.er3{grid-template-columns:72px 1fr}}
@@ -111,12 +132,12 @@ footer{text-align:center;color:var(--mu);padding:20px 20px 40px;font-size:.85rem
 #sstage.on{display:flex}
 #sstage .lg{position:absolute;top:calc(28px + env(safe-area-inset-top,0px));left:34px;height:64px;opacity:.95}
 #sstage .st{letter-spacing:5px;font-weight:700;font-size:clamp(.9rem,2.2vw,1.6rem);color:var(--tc);margin-bottom:22px;animation:pop .6s}
-.slogo{position:relative;overflow:hidden;background:#fff;border-radius:32px;padding:clamp(18px,3vw,40px);width:min(62vw,820px);height:min(38vh,420px);display:grid;place-items:center;border:5px solid var(--tc);box-shadow:0 0 90px var(--tg),0 0 0 12px rgba(255,255,255,.08);animation:sin .9s cubic-bezier(.2,.8,.2,1)}
-.slogo img{max-width:100%;max-height:100%;object-fit:contain}
+.slogo{position:relative;overflow:hidden;background:#fff;border-radius:32px;padding:clamp(18px,3vw,40px);width:min(62vw,820px);height:min(34vh,380px);display:flex;align-items:center;justify-content:center;border:5px solid var(--tc);box-shadow:0 0 90px var(--tg),0 0 0 12px rgba(255,255,255,.08);animation:sin .9s cubic-bezier(.2,.8,.2,1)}
+.slogo img{width:100%;height:100%;object-fit:contain}
 .slogo::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.75) 50%,transparent 65%);transform:translateX(-120%);animation:shine 2.2s .9s ease-out 1 forwards}
 @keyframes sin{from{transform:scale(.7) translateY(30px);opacity:0}to{transform:none;opacity:1}}
 @keyframes shine{to{transform:translateX(120%)}}
-#sstage h3{font-size:clamp(2rem,6.5vw,4.6rem);margin:30px 0 0;font-weight:800;animation:pop .7s .2s both}
+#sstage h3{font-size:clamp(1.8rem,5.5vw,4rem);margin:24px 0 0;font-weight:800;animation:pop .7s .2s both}
 #sstage h3::after{content:'';display:block;width:150px;height:3px;background:var(--tc);margin:16px auto 0;border-radius:3px}
 #sstage .sth{font-size:clamp(1rem,2.6vw,1.8rem);opacity:.9;margin-top:18px;letter-spacing:.5px}
 #tvtools{position:absolute;left:14px;bottom:calc(62px + env(safe-area-inset-bottom,0px));z-index:3;display:flex;gap:8px;opacity:.6}
@@ -131,25 +152,25 @@ footer{text-align:center;color:var(--mu);padding:20px 20px 40px;font-size:.85rem
 </header>
 <main>
   <div id="abar"><b>🔐 Modo admin</b><button class="sm" id="prevtv">👁 Vista TV</button><button class="alt sm" id="copytv">📋 Copiar link de la TV</button><button class="alt sm" id="logout">Cerrar sesión</button><span id="abmsg" class="mu"></span></div>
-  <h2>⏳ Cuenta regresiva</h2>
+  <h2 id="cdh2">⏳ Cuenta regresiva</h2>
   <div class="cd"><div><b id="d">0</b><span>Días</span></div><div><b id="h">0</b><span>Horas</span></div><div><b id="m">0</b><span>Min</span></div><div><b id="s">0</b><span>Seg</span></div></div>
   <div class="row"><button class="alt" id="boom">🎉 Confeti</button><button class="alt" id="money">💸 Lluvia de dinero</button></div>
-  <div id="cdadm" class="card" style="display:none;margin-top:12px"><b>📅 Configurar cuenta regresiva</b><div class="row"><label class="mu">Fecha y hora del evento <input type="datetime-local" id="when2"></label><button class="sm" id="savewhen">Guardar fecha</button><span id="whenmsg" class="mu"></span></div></div>
+  <div id="cdadm" class="card" style="display:none;margin-top:12px"><b>📅 Configurar cuenta regresiva</b><div class="row"><label class="mu">Nombre (¿para qué es?) <input id="cdname" placeholder="Ej. Faltan para el lanzamiento de Express" style="width:320px;max-width:100%"></label><label class="mu">Fecha y hora <input type="datetime-local" id="when2"></label></div><div class="row"><label class="mu"><input type="checkbox" id="cdhead"> Mostrar en la cabecera de la TV</label><label class="mu"><input type="checkbox" id="cdslide"> Mostrar también a pantalla completa</label><label class="mu">Segundos en pantalla <input id="cdsecs" type="number" min="4" max="120" style="width:70px"></label></div><div class="row"><button class="sm" id="savewhen">Guardar</button><span id="whenmsg" class="mu"></span></div></div>
 
   <div id="ctl" style="display:none">
     <h2>📡 Control de la TV</h2>
     <div class="card">
       <p class="mu" style="margin-top:0">Abre este mismo link en otra ventana con <b>#tv</b> al final, llévala al proyector y pulsa <b>F</b> para pantalla completa. Esta ventana queda como control.</p>
-      <div class="row" style="margin-top:0"><button id="start">▶ Presentar equipo</button><button class="alt" id="startd">🏍️ Primeros conductores</button><button class="alt" id="startp">🙋 Primeros pasajeros</button><button class="alt" id="startsp">🤝 Auspiciantes</button><button class="alt" id="prev">◀</button><button class="alt" id="next">Siguiente ▶</button><button class="alt" id="stop">✕ Cerrar</button><span id="onair" class="mu"></span></div>
-      <div class="row"><label><input type="checkbox" id="autod"> 🏍️ Conductores automático</label><label><input type="checkbox" id="autos"> 🤝 Auspiciantes automático</label><label><input type="checkbox" id="autop"> 🙋 Pasajeros automático</label><label class="mu">Segundos por persona <input id="autosecs" type="number" min="3" max="30" style="width:64px"></label><label class="mu">Seg. por auspiciante <input id="autosecss" type="number" min="4" max="60" style="width:64px"></label><label class="mu">Pausa entre rondas (seg) <input id="autogap" type="number" min="10" max="600" style="width:72px"></label></div>
+      <div class="row" style="margin-top:0"><button id="start">▶ Presentar equipo</button><button class="alt" id="startd">🏆 Ranking conductores</button><button class="alt" id="startp">🏆 Ranking pasajeros</button><button class="alt" id="startsp">🤝 Auspiciantes</button><button class="alt" id="prev">◀</button><button class="alt" id="next">Siguiente ▶</button><button class="alt" id="stop">✕ Cerrar</button><span id="onair" class="mu"></span></div>
+      <div class="row"><label><input type="checkbox" id="autod"> 🏆 Ranking conductores automático</label><label><input type="checkbox" id="autos"> 🤝 Auspiciantes automático</label><label><input type="checkbox" id="autop"> 🏆 Ranking pasajeros automático</label><label class="mu">Segundos por persona <input id="autosecs" type="number" min="3" max="30" style="width:64px"></label><label class="mu">Seg. por auspiciante <input id="autosecss" type="number" min="4" max="60" style="width:64px"></label><label class="mu">Pausa entre rondas (seg) <input id="autogap" type="number" min="10" max="600" style="width:72px"></label></div>
       <p class="mu" style="margin:6px 0 0">Con el automático activado, la TV presenta sola a cada persona y vuelve al carrusel. Los botones manuales tienen prioridad.</p>
     </div>
   </div>
 
   <h2>👥 Nuestro equipo</h2>
   <div class="grid" id="grid"></div>
-  <div id="dsec" style="display:none"><h2>🏍️ Primeros conductores afiliados</h2><div class="grid" id="gridd"></div></div>
-  <div id="psec" style="display:none"><h2>🙋 Primeros pasajeros registrados</h2><div class="grid" id="gridp"></div></div>
+  <div id="dsec" style="display:none"><h2>🏆 Ranking de conductores · más viajes</h2><div class="grid" id="gridd"></div></div>
+  <div id="psec" style="display:none"><h2>🏆 Ranking de pasajeros · más viajes</h2><div class="grid" id="gridp"></div></div>
   <div id="ssec" style="display:none"><h2>🤝 Auspiciantes</h2><div class="sg" id="grids"></div></div>
 
   <div id="progsec" style="display:none"><h2>📋 Programa <span class="mu">(interno, solo admin)</span></h2>
@@ -168,12 +189,21 @@ footer{text-align:center;color:var(--mu);padding:20px 20px 40px;font-size:.85rem
     </div>
   </div>
 
-  <div id="regadm" style="display:none"><h2>🏍️ Registrados, fondos y auspiciantes</h2><div class="card">
-      <p class="mu" style="margin-top:0">Primeros conductores afiliados</p><div id="drows"></div><div class="row" style="margin-top:0"><button class="alt sm" id="addd">+ Conductor</button></div>
-      <p class="mu">Primeros pasajeros registrados</p><div id="prows"></div><div class="row" style="margin-top:0"><button class="alt sm" id="addp">+ Pasajero</button></div>
+  <div id="regadm" style="display:none"><h2>🏆 Rankings, fondos y auspiciantes</h2><div class="card">
+      <div class="row" style="margin-top:0"><label class="mu">Orden de presentación en la TV <select id="rankrev" style="font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:8px"><option value="0">Del 1° al último</option><option value="1">Del último al 1° (suspenso)</option></select></label></div><p class="mu">Ranking de conductores: nombre, foto y viajes realizados (se ordena solo por viajes)</p><div id="drows"></div><div class="row" style="margin-top:0"><button class="alt sm" id="addd">+ Conductor</button></div>
+      <p class="mu">Ranking de pasajeros: nombre, foto y viajes realizados</p><div id="prows"></div><div class="row" style="margin-top:0"><button class="alt sm" id="addp">+ Pasajero</button></div>
       <p class="mu">Imágenes de fondo (TV y presentaciones; cambian cada 20 s)</p><div class="row" id="bgth" style="margin-top:0"></div><div class="row"><button class="alt sm" id="addbg">🖼️ Agregar fondos</button></div>
       <p class="mu">Auspiciantes: logo, nombre y categoría (cada uno se presenta de forma individual)</p><div id="sprows"></div><div class="row" style="margin-top:0"><button class="alt sm" id="addsp">+ Auspiciante</button></div>
       <div class="row"><button id="savereg">Guardar todo</button><span id="msg3" class="mu"></span></div></div></div>
+  <div id="scrnadm" style="display:none"><h2>🖥️ Qué se ve en pantalla</h2><div class="card">
+      <p class="mu" style="margin-top:0">Marca lo que se muestra en la TV y cuántos segundos dura cada pantalla.</p>
+      <div class="cfgr"><label><input type="checkbox" id="c_wel"> Bienvenida</label><label class="mu">segundos <input id="c_sw" type="number" min="3" max="120"></label></div>
+      <div class="cfgr"><label><input type="checkbox" id="c_rank"> Rankings (conductores y pasajeros)</label><label class="mu">segundos <input id="c_sr" type="number" min="3" max="120"></label></div>
+      <div class="cfgr"><label><input type="checkbox" id="c_pho"> Fotos del carrusel</label><label class="mu">segundos por foto <input id="c_sp" type="number" min="3" max="60"></label></div>
+      <div class="cfgr"><label><input type="checkbox" id="c_spo"> Auspiciantes (todos los logos)</label><label class="mu">segundos <input id="c_ss" type="number" min="3" max="120"></label></div>
+      <div class="cfgr"><label><input type="checkbox" id="c_prog"> Programa del evento</label><label class="mu">segundos <input id="c_sg" type="number" min="3" max="120"></label></div>
+      <div class="cfgr"><label><input type="checkbox" id="c_qr"> QR de descarga flotante</label><label><input type="checkbox" id="c_mq"> Marquesina de mensajes</label></div>
+      <div class="row"><button id="savecfg">Guardar pantalla</button><span id="cfgmsg" class="mu"></span></div></div></div>
   <div id="tvadm" style="display:none"><h2>📺 Pantalla TV</h2><div class="card">
       <p class="mu" style="margin-top:0">Fotos del carrusel</p><div class="row" id="ph" style="margin-top:0"></div>
       <div class="row"><button class="alt sm" id="addph">📷 Agregar fotos</button><label class="mu">Segundos por foto <input id="secs" type="number" min="3" max="60" style="width:70px"></label></div>
@@ -199,7 +229,7 @@ footer{text-align:center;color:var(--mu);padding:20px 20px 40px;font-size:.85rem
 <button id="qrshow">📲 QR</button>
 <div id="tv">
   <div class="tvh"><img class="lg" alt=""><b>EXPRESS</b><span style="opacity:.85">Conectamos personas, movemos tu ciudad</span>
-    <div class="tvc"><div><b id="td">0</b><small>Días</small></div><div><b id="th">0</b><small>Horas</small></div><div><b id="tm">0</b><small>Min</small></div><div><b id="ts">0</b><small>Seg</small></div></div></div>
+    <span id="tvcdn" style="margin-left:auto;margin-right:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.9"></span><div class="tvc"><div><b id="td">0</b><small>Días</small></div><div><b id="th">0</b><small>Horas</small></div><div><b id="tm">0</b><small>Min</small></div><div><b id="ts">0</b><small>Seg</small></div></div></div>
   <div class="tvs" id="slides"></div>
   <div class="mq"><div id="mqt"></div></div>
   <div id="tvtools"><button class="sm" id="aud" style="display:none">🔊 Reproducir audio</button><span id="audmsg" class="mu" style="display:none;background:rgba(0,0,0,.6);padding:4px 10px;border-radius:10px;color:#fff;max-width:420px"></span><audio id="aplay" loop></audio><button class="alt sm" id="tvx" style="display:none">✕ Salir de TV</button></div>
@@ -221,7 +251,8 @@ const DEF_STAFF=[['Gerente General','Dirección'],['Gerente de Operaciones','Ope
 const DEF_PROG=['19:00|Recepción y registro','19:30|Música ambiental y photo-booth','20:00|Apertura oficial y video institucional','20:15|Palabras del Gerente General','20:30|Presentación del equipo','20:50|Demostración en vivo de la app','21:10|Beneficios para conductores','21:30|Show musical','21:50|Sorteos y dinámicas','22:20|Brindis y cierre'].map(l=>{const a=l.split('|');return{t:a[0],a:a[1]}});
 const DEF_MSG=['¡Bienvenidos al lanzamiento de Express!','Descarga la app en Google Play','0 comisión en tus primeras 40 carreras','Bonos semanales para conductores','Trinidad avanza contigo'];
 let defWhen=new Date(Date.now()+7*864e5);defWhen.setHours(20,0,0,0);
-let E={when:defWhen.toISOString(),staff:DEF_STAFF,prog:DEF_PROG,cur:-1,msgs:DEF_MSG,photos:[],yt:'',showProg:false,secs:7,audio:'',drivers:[],pass:[],bgs:[],sponsors:[],autoD:false,autoP:false,autoSecs:6,autoGap:45,autoS:false,autoSecsS:10};
+const CFG0={wel:true,pho:true,spo:true,rank:true,qr:true,mq:true,sw:8,ss:10,sr:12,sg:15};
+let E={when:defWhen.toISOString(),staff:DEF_STAFF,prog:DEF_PROG,cur:-1,msgs:DEF_MSG,photos:[],yt:'',showProg:false,secs:7,audio:'',drivers:[],pass:[],bgs:[],sponsors:[],autoD:false,autoP:false,autoSecs:6,autoGap:45,autoS:false,autoSecsS:10,rankRev:false,cdName:'',cdHead:true,cdSlide:false,cdSecs:10,cfg:{...CFG0}};
 let L={on:false,idx:0},D={pool:[],won:[],prize:'',winner:'',t:0},db=null,assets=null,admin=false,draft=[],si=0,lastT=0,dtok=0;
 const isTV=()=>location.hash==='#tv';
 const ini=n=>String(n||'').split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
@@ -405,7 +436,7 @@ function setIdent(){const k=isTV()?['📺','Express · TV']:admin?['🎛️','Ex
   document.title=k[1];let l=document.querySelector('link[rel=icon]');if(!l){l=document.createElement('link');l.rel='icon';document.head.appendChild(l)}
   l.href='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">'+k[0]+'</text></svg>')}
 function syncAudio(){}
-function syncUI(){setIdent();autoUI();whenUI();$('showprog').checked=!!E.showProg;
+function syncUI(){setIdent();autoUI();whenUI();cdUI();applyCfg();cfgUI();$('showprog').checked=!!E.showProg;
   $('aud').style.display=isTV()&&(E.audio||ytParse(E.yt))?'inline-block':'none';
   $('aud').textContent=audioOK?'⏹ Detener audio':'🔊 Reproducir audio';
   $('tvx').style.display=isTV()&&admin?'inline-block':'none';
@@ -428,7 +459,7 @@ $('addau').onclick=()=>{if(!assets){$('msg2').textContent='Subida no disponible'
 $('rmau').onclick=async()=>{E.audio='';syncUI();await pSave();$('msg2').textContent='Audio quitado'};
 
 /* Conductores, pasajeros, fondos y auspiciantes */
-const curList=()=>L.s==='sp'?normSp():L.s==='drivers'?(E.drivers||[]):L.s==='pass'?(E.pass||[]):E.staff;
+const curList=()=>L.s==='sp'?normSp():L.s==='drivers'?rk('drivers'):L.s==='pass'?rk('pass'):E.staff;
 function renderTeam(){
   $('grid').innerHTML=E.staff.map(p=>`<div class="p"><div class="av">${av(p)}</div><b>${esc(p.n)}</b><small>${esc(p.r)}</small><span class="tag">${icon(p)} ${esc(p.d)}</span></div>`).join('');
   const mk=(a,k)=>a.map((p,i)=>`<div class="p"><div class="av">${av(p)}</div><b>${esc(p.n)}</b><small>${k} N° ${i+1}</small></div>`).join('');
@@ -470,8 +501,8 @@ $('addd').onclick=()=>{rd.drivers.push({n:'',p:''});regDraw()};
 $('addp').onclick=()=>{rd.pass.push({n:'',p:''});regDraw()};
 $('addbg').onclick=()=>addMany(rd.bgs,1600,false);
 $('addsp').onclick=()=>addMany(rd.sponsors,700,true);
-$('savereg').onclick=async()=>{const cl=a=>a.filter(x=>(x.n||'').trim()).map(x=>({n:x.n.trim(),p:x.p||''}));
-  E.drivers=cl(rd.drivers);E.pass=cl(rd.pass);E.bgs=[...rd.bgs];E.sponsors=rd.sponsors.filter(x=>x.p||(x.n||'').trim()).map(x=>({p:x.p||'',n:(x.n||'').trim(),t:x.t||'aliado'}));
+$('savereg').onclick=async()=>{const cl=a=>a.filter(x=>(x.n||'').trim()).map(x=>({n:x.n.trim(),p:x.p||'',v:Math.max(0,parseInt(x.v)||0)})).sort((a,b)=>b.v-a.v);
+  E.drivers=cl(rd.drivers);E.pass=cl(rd.pass);E.rankRev=$('rankrev').value==='1';E.bgs=[...rd.bgs];E.sponsors=rd.sponsors.filter(x=>x.p||(x.n||'').trim()).map(x=>({p:x.p||'',n:(x.n||'').trim(),t:x.t||'aliado'}));
   renderTeam();applyBg();if(isTV())tvRender();
   if(!db){$('msg3').textContent='Sin base de datos';return}
   try{await db.doc('config/event').set(E);$('msg3').textContent='✅ Guardado para todos'}catch(e){$('msg3').textContent='No se pudo guardar'}};
@@ -544,6 +575,76 @@ function upLogo(p){if(!assets){$('msg3').textContent='Subida no disponible';retu
   f.onchange=async()=>{if(!f.files[0])return;$('msg3').textContent='Subiendo logo…';try{const u=await assets.upload(await shrinkFlat(f.files[0],700));p.p=u.id;$('msg3').textContent='Logo listo, falta guardar';regDraw()}catch(e){$('msg3').textContent='No se pudo subir el logo'}};f.click()}
 $('addsp').onclick=()=>{rd.sponsors.push({p:'',n:'',t:'aliado'});regDraw()};
 
+/* ===== Rankings, pantalla configurable y cuenta regresiva con nombre ===== */
+const medal=p=>p===1?'🥇':p===2?'🥈':p===3?'🥉':'#'+p;
+function rk0(s){return (E[s==='drivers'?'drivers':'pass']||[]).map(x=>({...x})).sort((a,b)=>(+b.v||0)-(+a.v||0)).map((x,i)=>({...x,pos:i+1}))}
+function rk(s){const a=rk0(s);return E.rankRev?a.reverse():a}
+const cfg=()=>Object.assign({},CFG0,E.cfg||{});
+function applyCfg(){const c=cfg(),tv=isTV(),b=document.body.classList;b.toggle('noqr',tv&&!c.qr);b.toggle('nomq',tv&&!c.mq);b.toggle('nocd',tv&&E.cdHead===false)}
+function cdUI(){const n=E.cdName||'';$('cdh2').textContent='⏳ '+(n||'Cuenta regresiva');$('tvcdn').textContent=n}
+function upd(){let ms=new Date(E.when)-Date.now();if(isNaN(ms))ms=0;
+  if(ms<=0){ms=0;if(!fired){fired=true;boom()}}else fired=false;
+  const s=Math.floor(ms/1000),v=[Math.floor(s/86400),pad(Math.floor(s%86400/3600)),pad(Math.floor(s%3600/60)),pad(s%60)];
+  ['d','h','m','s'].forEach((k,i)=>{$(k).textContent=v[i];$('t'+k).textContent=v[i];document.querySelectorAll('.cn-'+k).forEach(e=>{e.textContent=v[i]})})}
+function renderTeam(){
+  $('grid').innerHTML=E.staff.map(p=>`<div class="p"><div class="av">${av(p)}</div><b>${esc(p.n)}</b><small>${esc(p.r)}</small><span class="tag">${icon(p)} ${esc(p.d)}</span></div>`).join('');
+  const mk=s=>rk0(s).map(p=>`<div class="p"><div class="av">${av(p)}</div><b>${medal(p.pos)} ${esc(p.n)}</b><small>${+p.v||0} viajes realizados</small></div>`).join('');
+  const D=E.drivers||[],P=E.pass||[],S=normSp().map(x=>x.p).filter(Boolean);
+  $('dsec').style.display=D.length?'block':'none';$('gridd').innerHTML=mk('drivers');
+  $('psec').style.display=P.length?'block':'none';$('gridp').innerHTML=mk('pass');
+  $('ssec').style.display=S.length?'block':'none';$('grids').innerHTML=S.map(id=>`<div><img src="${bu(id)}" alt=""></div>`).join('')}
+function rankHtml(s){const t=s==='drivers'?'🏆 Ranking de conductores':'🏆 Ranking de pasajeros';
+  return `<h2>${t}</h2><p style="margin:0 0 12px;opacity:.85">Más viajes realizados</p><ol class="rk">${rk0(s).slice(0,7).map(p=>`<li class="${p.pos<=3?'t1':''}"><b>${medal(p.pos)}</b><span>${esc(p.n)}</span><em>${+p.v||0} viajes</em></li>`).join('')}</ol>`}
+function cdSlideHtml(){const f=new Date(E.when);const fs=isNaN(f)?'':f.toLocaleString('es-BO',{dateStyle:'full',timeStyle:'short'});
+  return `<h2 style="font-size:clamp(1.8rem,5vw,4rem)">${esc(E.cdName||'Cuenta regresiva')}</h2><div class="cdbig"><div><b class="cn-d">0</b><small>Días</small></div><div><b class="cn-h">0</b><small>Horas</small></div><div><b class="cn-m">0</b><small>Min</small></div><div><b class="cn-s">0</b><small>Seg</small></div></div><p style="margin-top:18px;font-size:clamp(1rem,2.4vw,1.8rem);opacity:.9">${esc(fs)}</p>`}
+function spInner(){return `<h2>🤝 Gracias a nuestros auspiciantes</h2><div class="sg">${normSp().map(x=>x.p).filter(Boolean).map(id=>`<div><img src="${bu(id)}" alt=""></div>`).join('')}</div>`}
+function tvRender(){const c=cfg(),sl=[];
+  const add=(h,s)=>sl.push(`<div class="sl" data-secs="${s}">${h}</div>`);
+  const welcome=`<h2 style="font-size:clamp(2.4rem,8vw,6rem)">🚀 ¡Bienvenidos!</h2><p style="font-size:clamp(1.2rem,3vw,2.2rem)">Conectamos personas, movemos tu ciudad</p>`;
+  if(c.wel)add(welcome,c.sw);
+  if(E.cdSlide)add(cdSlideHtml(),E.cdSecs||10);
+  if(c.rank){if((E.drivers||[]).length)add(rankHtml('drivers'),c.sr);if((E.pass||[]).length)add(rankHtml('pass'),c.sr)}
+  if(c.pho)(E.photos||[]).forEach(id=>{const u=bu(id);sl.push(`<div class="sl ph" data-secs="${E.secs||7}"><div class="bg" style="background-image:url('${u}')"></div><img src="${u}" alt=""></div>`)});
+  if(c.spo&&normSp().some(x=>x.p))add(spInner(),c.ss);
+  progIdx=-1;if(E.showProg){progIdx=sl.length;add(`<h2>📋 Programa de hoy</h2><ol>${agItems()}</ol>`,c.sg)}
+  if(!sl.length)add(welcome,8);
+  $('slides').innerHTML=sl.join('');si=0;
+  if(wantProg&&progIdx>=0){si=progIdx;wantProg=false}
+  $('slides').children[si].classList.add('on');
+  const m=(E.msgs.length?E.msgs:DEF_MSG).join('   ✦   ');$('mqt').textContent=m+'   ✦   ';$('mqt').style.animationDuration=Math.max(25,m.length*.22)+'s';
+  applyCfg();upd()}
+function stageShow(s,idx){
+  if(s==='sp'){sponsorShow(idx);return}
+  $('sstage').classList.remove('on');
+  let p0,k,top=false;
+  if(s==='drivers'||s==='pass'){p0=rk(s)[idx];if(p0){top=p0.pos<=3;k=[p0.pos>3?'🏅':medal(p0.pos),'PUESTO '+p0.pos+' · '+(s==='drivers'?'RANKING DE CONDUCTORES':'RANKING DE PASAJEROS'),(+p0.v||0)+' viajes realizados']}}
+  else{p0=E.staff[idx];if(p0)k=[icon(p0),p0.d,p0.r]}
+  if(!p0){hideStage();return}
+  $('sd').textContent=k[0]+' '+k[1];$('sa').innerHTML=av(p0);$('sn').textContent=p0.n;$('sr').textContent=k[2];
+  const h=$('sn');h.style.animation='none';void h.offsetWidth;h.style.animation='';$('stage').classList.add('on');burst(innerWidth/2,innerHeight/3,top?160:90,top?GOLD:undefined)}
+function rankRows(box,arr){const b=$(box);b.innerHTML='';arr.forEach((p,i)=>{const r=document.createElement('div');r.className='er4';
+  r.innerHTML=`<div class="av">${av(p)}</div><input placeholder="Nombre"><input type="number" min="0" placeholder="Viajes"><button class="alt sm">📷</button><button class="alt sm">🗑</button>`;
+  const [ni,vi]=r.querySelectorAll('input');ni.value=p.n||'';ni.oninput=()=>{p.n=ni.value};vi.value=p.v||'';vi.oninput=()=>{p.v=parseInt(vi.value)||0};
+  const [b1,b2]=r.querySelectorAll('button');b1.onclick=()=>upOne(p);b2.onclick=()=>{arr.splice(i,1);regDraw()};b.appendChild(r)})}
+function regDraw(){rankRows('drows',rd.drivers);rankRows('prows',rd.pass);idThumbs('bgth',rd.bgs);sponsorRows()}
+function openReg(){rd={drivers:(E.drivers||[]).map(x=>({...x})),pass:(E.pass||[]).map(x=>({...x})),bgs:[...(E.bgs||[])],sponsors:normSp().map(x=>({...x}))};$('rankrev').value=E.rankRev?'1':'0';regDraw()}
+$('addd').onclick=()=>{rd.drivers.push({n:'',p:'',v:0});regDraw()};
+$('addp').onclick=()=>{rd.pass.push({n:'',p:'',v:0});regDraw()};
+function whenUI(){const w=$('when2'),t=new Date(E.when),a=document.activeElement,set=(id,v)=>{if(a!==$(id))$(id).value=v};
+  if(a!==w&&!isNaN(t))w.value=new Date(t-t.getTimezoneOffset()*6e4).toISOString().slice(0,16);
+  set('cdname',E.cdName||'');set('cdsecs',E.cdSecs||10);$('cdhead').checked=E.cdHead!==false;$('cdslide').checked=!!E.cdSlide}
+$('savewhen').onclick=async()=>{const d=new Date($('when2').value);if(isNaN(d)){$('whenmsg').textContent='Elige fecha y hora';return}
+  E.when=d.toISOString();E.cdName=$('cdname').value.trim();E.cdHead=$('cdhead').checked;E.cdSlide=$('cdslide').checked;E.cdSecs=Math.max(4,Math.min(120,+$('cdsecs').value||10));
+  upd();cdUI();applyCfg();if(isTV())tvRender();if(!db){$('whenmsg').textContent='Sin base de datos';return}
+  try{await db.doc('config/event').set(E);$('whenmsg').textContent='✅ Cuenta regresiva guardada para todos'}catch(e){$('whenmsg').textContent='No se pudo guardar'}};
+function cfgUI(){const c=cfg(),set=(id,v)=>{const e=$(id);if(!e)return;if(e.type==='checkbox')e.checked=!!v;else if(document.activeElement!==e)e.value=v};
+  set('c_wel',c.wel);set('c_sw',c.sw);set('c_rank',c.rank);set('c_sr',c.sr);set('c_pho',c.pho);set('c_sp',E.secs||7);set('c_spo',c.spo);set('c_ss',c.ss);set('c_prog',E.showProg);set('c_sg',c.sg);set('c_qr',c.qr);set('c_mq',c.mq)}
+$('savecfg').onclick=async()=>{const n=(id,lo,hi,d)=>Math.max(lo,Math.min(hi,+$(id).value||d));
+  E.cfg={wel:$('c_wel').checked,sw:n('c_sw',3,120,8),rank:$('c_rank').checked,sr:n('c_sr',3,120,12),pho:$('c_pho').checked,spo:$('c_spo').checked,ss:n('c_ss',3,120,10),sg:n('c_sg',3,120,15),qr:$('c_qr').checked,mq:$('c_mq').checked};
+  E.secs=n('c_sp',3,60,7);E.showProg=$('c_prog').checked;applyCfg();if(isTV())tvRender();$('cfgmsg').textContent='Guardando…';
+  if(!db){$('cfgmsg').textContent='Sin base de datos';return}
+  try{await db.doc('config/event').set(E);$('cfgmsg').textContent='✅ Pantalla guardada para todos'}catch(e){$('cfgmsg').textContent='No se pudo guardar'}};
+
 const LOGO='data:image/png;base64,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';
 document.querySelectorAll('img.lg').forEach(i=>i.src=LOGO);
 
@@ -578,14 +679,14 @@ async function fbInit(){
 
 /* Init */
 async function init(){
-  renderTeam();renderProg();upd();tvMode();setInterval(upd,1000);let tn=0;setInterval(()=>{if(isTV()&&!L.on&&++tn>=(E.secs||7)){tn=0;tvTick()}},1000);
+  renderTeam();renderProg();upd();tvMode();setInterval(upd,1000);let tn=0;setInterval(()=>{if(!isTV())return;const cur=$('slides').children[si],need=cur?(+cur.dataset.secs||E.secs||7):7;if(++tn>=need){tn=0;tvTick()}},1000);
   try{await fbInit()}catch(e){console.error(e);alert('No se pudo conectar con Firebase. Revisa FB_CONFIG.')}
-  if(admin&&!isTV()){['ctl','drawsec','admin','tvadm','progsec','regadm','cdadm'].forEach(i=>$(i).style.display='block');$('pctl').style.display='flex';$('abar').style.display='flex';if(!db){openEditor();openTvEditor()}}
+  if(admin&&!isTV()){['ctl','drawsec','admin','tvadm','progsec','regadm','cdadm','scrnadm'].forEach(i=>$(i).style.display='block');$('pctl').style.display='flex';$('abar').style.display='flex';if(!db){openEditor();openTvEditor()}}
   syncUI();
   if(!db)return;
   try{
     db.doc('config/event').onSnapshot(s=>{const d=s.exists?s.data():null;if(!d){if(admin&&!edInit){edInit=true;openEditor();openTvEditor()}return}
-      if(Array.isArray(d.staff)&&d.staff.length)E.staff=d.staff;if(Array.isArray(d.prog)&&d.prog.length)E.prog=d.prog;if(Array.isArray(d.msgs))E.msgs=d.msgs;E.photos=Array.isArray(d.photos)?d.photos:[];E.yt=typeof d.yt==='string'?d.yt:'';E.showProg=!!d.showProg;E.secs=d.secs||7;E.audio=typeof d.audio==='string'?d.audio:'';E.drivers=Array.isArray(d.drivers)?d.drivers:[];E.pass=Array.isArray(d.pass)?d.pass:[];E.bgs=Array.isArray(d.bgs)?d.bgs:[];E.sponsors=Array.isArray(d.sponsors)?d.sponsors:[];E.autoD=!!d.autoD;E.autoP=!!d.autoP;E.autoSecs=d.autoSecs||6;E.autoGap=d.autoGap||45;E.autoS=!!d.autoS;E.autoSecsS=d.autoSecsS||10;applyBg();
+      if(Array.isArray(d.staff)&&d.staff.length)E.staff=d.staff;if(Array.isArray(d.prog)&&d.prog.length)E.prog=d.prog;if(Array.isArray(d.msgs))E.msgs=d.msgs;E.photos=Array.isArray(d.photos)?d.photos:[];E.yt=typeof d.yt==='string'?d.yt:'';E.showProg=!!d.showProg;E.secs=d.secs||7;E.audio=typeof d.audio==='string'?d.audio:'';E.drivers=Array.isArray(d.drivers)?d.drivers:[];E.pass=Array.isArray(d.pass)?d.pass:[];E.bgs=Array.isArray(d.bgs)?d.bgs:[];E.sponsors=Array.isArray(d.sponsors)?d.sponsors:[];E.autoD=!!d.autoD;E.autoP=!!d.autoP;E.autoSecs=d.autoSecs||6;E.autoGap=d.autoGap||45;E.autoS=!!d.autoS;E.autoSecsS=d.autoSecsS||10;E.rankRev=!!d.rankRev;E.cdName=d.cdName||'';E.cdHead=d.cdHead!==false;E.cdSlide=!!d.cdSlide;E.cdSecs=d.cdSecs||10;E.cfg=Object.assign({},CFG0,d.cfg||{});applyBg();
       if(typeof d.cur==='number'){if(d.cur!==E.cur){hold=Date.now()+30000;wantProg=true}E.cur=d.cur}if(d.when)E.when=d.when;renderTeam();renderProg();upd();onair();syncUI();if(admin&&!edInit){edInit=true;openEditor();openTvEditor()}},()=>{});
     db.doc('config/live').onSnapshot(s=>{if(s.exists){L=s.data();onair();showStage()}},()=>{});
     let f1=true;db.doc('config/fx').onSnapshot(s=>{if(f1){f1=false;return}if(isTV()&&s.exists){s.data().k==='m'?money():boom()}},()=>{});
